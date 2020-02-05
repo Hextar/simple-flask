@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request
-from models.task import Task
+from models.task import *
+from config.db import *
 
 
 # Init the Flask app
@@ -16,29 +17,18 @@ app.config['DEBUG'] = True
 @app.route('/', methods=['POST', 'GET'])
 def home():
 	if request.method == 'POST':
-		task_description = request.form['description']
-		task = Task(description=task_description)
-		try:
-			Task.add(task)
-			return redirect('/')
-		except:
-			return 'There was an issue adding your task'
+		pass
 	else:
-		tasks = Task.findAll()
+		tasks = {}
 		return render_template('index.html', tasks=tasks)
 
 
 # Set the api for UPDATE
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
+	task_to_update = {}
 	if request.method == 'POST':
-		task = Task(description=task_description)
-		try:
-			description = request.form['description']
-			Task.update(id, task)
-			return redirect('/')
-		except:
-			return 'There was an issue deleting your task'
+		pass
 	else:
 		return render_teamplte('update.html', task=task_to_update)
 
@@ -47,16 +37,17 @@ def update(id):
 @app.route('/delete/<int:id>')
 def delete(id):
 	try:
-		Task.delete(id)
+		pass
 		return redirect('/')
 	except:
-		return 'There was an issue deleting your task'
+		pass
 
 
 if __name__ == '__main__':
-	# Use http://localhost
-	# Use port :5000
-	# Activate debug
-	# Disable thread (to solve problem with sqlalchemy)
-	app.run(host='0.0.0.0', port=5000, debug=True, threaded=False)
+	app.run(
+		host='0.0.0.0',
+		port=5000,
+		debug=True,
+		threaded=False
+	)
 
